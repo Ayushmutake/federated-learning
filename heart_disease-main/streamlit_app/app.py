@@ -534,7 +534,7 @@ def main():
     # ═════════════════════════════════════════════════════════════════════════
     with tabs[4]:
         st.subheader("How Federated Learning Protects Patient Privacy")
-        st.markdown(""")
+        st.markdown("""
 ### 🔐 The Core Privacy Problem in Healthcare
 
 Traditional machine learning requires **centralising data** — all hospitals send
