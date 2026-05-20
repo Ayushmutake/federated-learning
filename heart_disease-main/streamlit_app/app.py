@@ -493,55 +493,72 @@ def main():
     # ═════════════════════════════════════════════════════════════════════════
     with tabs[2]:
         st.subheader("Model Performance Visualisations")
+
         plot_files = [
             ("01_training_curves.png", "Training Curves"),
             ("02_fed_confusion_matrix.png", "Federated Confusion Matrix"),
             ("07_feature_importance.png", "Feature Importance"),
         ]
+
         for fname, title in plot_files:
             path = os.path.join(PLOTS_DIR, fname)
+
             if os.path.exists(path):
                 st.markdown(f"**{title}**")
-                st.image(path, width="stretch")
+
+                # FIXED IMAGE DISPLAY
+                st.image(path, use_container_width=True)
+
                 st.divider()
             else:
-                st.info(f"Run `python app.py` to generate: {title}")
+                st.info(f"Run training first to generate: {title}")
 
     # ═════════════════════════════════════════════════════════════════════════
     # TAB 4 – Training Logs
     # ═════════════════════════════════════════════════════════════════════════
     with tabs[3]:
         st.subheader("Round-by-Round Training Logs")
+
         if os.path.exists(LOGS_PATH):
             with open(LOGS_PATH) as f:
                 logs = json.load(f)
+
             df = pd.DataFrame(logs)
+
             cols_to_hide = {"accuracy", "precision", "recall", "f1"}
             visible_cols = [c for c in df.columns if c not in cols_to_hide]
+
             st.dataframe(
                 df[visible_cols].style.format(
                     {c: "{:.4f}" for c in visible_cols if c != "round"}
                 ),
                 use_container_width=True,
             )
+
             if "avg_client_loss" in df.columns:
                 st.line_chart(df.set_index("round")[["avg_client_loss"]])
+
         else:
-            st.info("No logs yet. Run `python app.py` to train the model.")
+            st.info("No logs yet. Train the model first.")
 
     # ═════════════════════════════════════════════════════════════════════════
     # TAB 5 – About FL
     # ═════════════════════════════════════════════════════════════════════════
     with tabs[4]:
         st.subheader("How Federated Learning Protects Patient Privacy")
+
         st.markdown("""
 ### 🔐 The Core Privacy Problem in Healthcare
 
-Traditional machine learning requires **centralising data** — all hospitals send
-patient records to one server. This creates:
+Traditional machine learning requires **centralising data** —
+all hospitals send patient records to one server.
+
+This creates:
 - HIPAA / GDPR compliance risks
 - Single point of breach
 - Patient distrust
+
+---
 
 ### 🌐 Federated Learning Solution
 
@@ -554,6 +571,8 @@ Instead of sending data:
 3. A central server aggregates updates securely
 4. The global model improves without exposing sensitive records
 
+---
+
 ### 🛡️ Additional Security Layers
 
 - Differential Privacy
@@ -561,6 +580,13 @@ Instead of sending data:
 - Decentralized Training
 - Encrypted Communication
 
-This architecture helps preserve patient confidentiality while still enabling
+This architecture preserves patient confidentiality while enabling
 high-quality biomedical AI research.
         """)
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# RUN APP
+# ═══════════════════════════════════════════════════════════════════════════════
+
+if __name__ == "__main__":
+    main()
