@@ -544,3 +544,23 @@ patient records to one server. This creates:
 - Patient distrust
 
 ### 🌐 Federated Learning Solution
+
+Federated Learning allows hospitals to train AI models collaboratively
+without sharing raw patient data.
+
+Instead of sending data:
+1. Each hospital trains locally
+2. Only model updates are shared
+3. A central server aggregates updates securely
+4. The global model improves without exposing sensitive records
+
+### 🛡️ Additional Security Layers
+
+- Differential Privacy
+- Secure Aggregation
+- Decentralized Training
+- Encrypted Communication
+
+This architecture helps preserve patient confidentiality while still enabling
+high-quality biomedical AI research.
+        """)
